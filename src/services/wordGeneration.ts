@@ -92,9 +92,12 @@ const generateValidWords = (input: string) => {
     const wordSubsetPermutations = generateSubsetPermutations(wordSubsets)
 
     // 3. Only keep if the combination is valid
-    const validWordsFromInput = wordSubsetPermutations.filter((word) =>
+    let validWordsFromInput = wordSubsetPermutations.filter((word) =>
       VALID_ENGLISH_WORDS.includes(word)
     )
+
+    // 4. Sort the input for output consistency
+    validWordsFromInput.sort()
 
     return validWordsFromInput
   } catch (error) {
