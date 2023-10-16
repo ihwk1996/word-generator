@@ -1,5 +1,5 @@
-import { ValidationError } from '../util/errors'
-import VALID_ENGLISH_WORDS from '../util/words'
+import { ValidationError } from '../utils/errors'
+import VALID_ENGLISH_WORDS from '../utils/words'
 
 // Limit the input length generation is expensive
 const MAX_INPUT_LENGTH = 10

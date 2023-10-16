@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { generateValidWords } from '../services/wordGeneration'
-import { ValidationError } from '../util/errors'
+import { generateValidWords } from '../../services/wordGeneration'
+import { ValidationError } from '../../utils/errors'
 
 interface SuccessResponse {
   words: string[]
