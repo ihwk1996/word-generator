@@ -20,12 +20,20 @@ import { SearchIcon, ExternalLinkIcon } from '@chakra-ui/icons'
 
 function App() {
   const [inputText, setInputText] = useState<string>('')
+  const [isLoading, setIsLoading] = useState(false)
+
   const [words, setWords] = useState<string[] | undefined>(undefined)
   const [error, setError] = useState<string>()
-  const [isLoading, setIsLoading] = useState(false)
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) =>
     setInputText(e.target.value)
+
+  const handleInputKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleGenerateButtonClick()
+    }
+  }
 
   const handleGenerateButtonClick = async () => {
     // Skip if there is no inputText
@@ -34,7 +42,7 @@ function App() {
     }
     setIsLoading(true)
 
-    // Call api the generate words
+    // Call api to generate words
     try {
       const response = await fetch('/api/words', {
         method: 'POST',
@@ -61,13 +69,6 @@ function App() {
     }
   }
 
-  const handleInputKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      handleGenerateButtonClick()
-    }
-  }
-
   const renderWords = () => {
     // Ignore if words not defined
     if (!words) return
@@ -82,6 +83,7 @@ function App() {
         </Alert>
       )
     } else {
+      // Show all valid words
       return (
         <Alert borderRadius={4} status="success">
           <Flex flexDir="column">
@@ -130,7 +132,7 @@ function App() {
             value={inputText}
             onChange={handleInputChange}
             onKeyPress={handleInputKeyPress}
-            placeholder="Enter something..."
+            placeholder="Enter some characters..."
             size="lg"
             mr={2}
           />

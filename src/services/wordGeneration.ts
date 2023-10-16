@@ -1,28 +1,34 @@
 import { ValidationError } from '../utils/errors'
 import VALID_ENGLISH_WORDS from '../utils/words'
 
-// Limit the input length generation is expensive
+// Limit the input length as generation is expensive
 const MAX_INPUT_LENGTH = 10
 
-const generateWordSubsets = (word: string): string[] => {
+/**
+ * Generate all subset strings from an input string
+ *
+ * @param {string} input - A string
+ * @returns {string[]} - An array strings which are subsets of the input string
+ */
+const generateWordSubsets = (input: string): string[] => {
   // Sort the word to help with duplicate handling later
-  const wordAsCharArray = word.split('').sort()
+  const inputAsCharArray = input.split('').sort()
 
   // Generate all subsets with the input
   const subsets: string[] = []
   const subsetHelper = (currentSub: string[], index: number) => {
     // 1. Base case: when index is length of wordAsCharArray, reached end
-    if (index === wordAsCharArray.length) {
+    if (index === inputAsCharArray.length) {
       subsets.push(currentSub.join(''))
       return
     }
 
     // 2. Recurse by picking the item at index, or not picking
     // 2a. Pick
-    subsetHelper(currentSub.concat([wordAsCharArray[index]]), index + 1)
+    subsetHelper(currentSub.concat([inputAsCharArray[index]]), index + 1)
 
     // 2b. Don't Pick
-    while (wordAsCharArray[index] === wordAsCharArray[index + 1]) {
+    while (inputAsCharArray[index] === inputAsCharArray[index + 1]) {
       index++ // keep incrementing index until index + 1 is different from index
     }
     subsetHelper(currentSub.slice(), index + 1)
@@ -33,7 +39,13 @@ const generateWordSubsets = (word: string): string[] => {
   return subsets
 }
 
-const generateSubsetPermutations = (wordSubsets: string[]): string[] => {
+/**
+ * Generate all permutations given an array of strings
+ *
+ * @param {string} wordSubsets - An array of strings
+ * @returns {string[]} - An array strings which are permutations of all strings in input array
+ */
+const generateWordSubsetPermutations = (wordSubsets: string[]): string[] => {
   // Use a set to prevent duplicate results
   const subsetPermutations: Set<string> = new Set()
 
@@ -65,10 +77,10 @@ const generateSubsetPermutations = (wordSubsets: string[]): string[] => {
 /**
  * Generate valid english words from a string of alphabets
  *
- * @param {string} input - A string containing alphabets only
+ * @param {string} input - A string containing alphabets only, limited to MAX_INPUT_LENGTH
  * @returns {string[]} - An array of valid english words generated from the input string
  */
-const generateValidWords = (input: string) => {
+const generateValidWords = (input: string): string[] => {
   console.log('Received input', input)
 
   try {
@@ -89,9 +101,9 @@ const generateValidWords = (input: string) => {
     const wordSubsets = generateWordSubsets(lowercasedInput)
 
     // 3. Generate all permutations of each subset of the input word
-    const wordSubsetPermutations = generateSubsetPermutations(wordSubsets)
+    const wordSubsetPermutations = generateWordSubsetPermutations(wordSubsets)
 
-    // 3. Only keep if the combination is valid
+    // 3. Filter for valid words
     let validWordsFromInput = wordSubsetPermutations.filter((word) =>
       VALID_ENGLISH_WORDS.includes(word)
     )

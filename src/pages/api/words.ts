@@ -19,7 +19,7 @@ export default function handler(
 
   try {
     const validWords = generateValidWords(input)
-    res.status(200).json({ words: validWords ?? [] })
+    res.status(200).json({ words: validWords })
   } catch (error: any) {
     if (error instanceof ValidationError) {
       res.status(400).json({ error: error.message })
