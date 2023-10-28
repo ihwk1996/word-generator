@@ -85,8 +85,8 @@ const generateValidWords = (input: string): string[] => {
 
   try {
     // 0. Validation
-    const isInputAlphanumeric = /^[a-zA-Z]+$/.test(input)
-    if (!isInputAlphanumeric) {
+    const isInputAlphabets = /^[a-zA-Z]+$/.test(input)
+    if (!isInputAlphabets) {
       throw new ValidationError('Input is invalid. Only alphabets are allowed.')
     }
     const isInputWithinLimit = input.length <= MAX_INPUT_LENGTH
